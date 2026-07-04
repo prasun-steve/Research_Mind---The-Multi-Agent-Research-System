@@ -8,7 +8,7 @@ Built with **LangGraph**, **LangChain**, **Hugging Face**, **Tavily**, and **Str
 
 ---
 
-![ResearchMind dashboard](assets/ResearchMind.png)
+![ResearchMind dashboard](image.png)
 
 ---
 
