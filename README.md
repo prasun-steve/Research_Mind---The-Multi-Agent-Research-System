@@ -4,7 +4,7 @@
 
 ResearchMind takes a single research topic and runs it through a pipeline of four specialized AI agents that collaborate to produce a polished, fact-checked research report. Instead of a single LLM answering from memory, a **Search Agent** goes out and finds live sources, a **Reader Agent** scrapes them for depth, a **Writer** drafts a structured report, and a **Critic** reviews it like a senior researcher grading a junior's work.
 
-Built with **LangGraph**, **LangChain**, **Hugging Face**, **Tavily**, and **Streamlit**.
+Built with , **LangChain**, **Hugging Face**, **Tavily**, and **Streamlit**.
 
 ---
 
@@ -18,7 +18,6 @@ Built with **LangGraph**, **LangChain**, **Hugging Face**, **Tavily**, and **Str
 - 📄 **Reader Agent** — scrapes and extracts clean text from the most relevant source
 - ✍️ **Writer Chain** — synthesizes findings into a structured, professional report
 - 🧐 **Critic Chain** — scores the report and gives specific, constructive feedback
-- 🕸️ **True graph orchestration** — the whole pipeline is a LangGraph `StateGraph`, not a hardcoded script, so state flows between stages explicitly and the flow can branch or loop later
 - 🎨 **Streamlit UI** — a live, styled dashboard showing each agent's progress in real time
 - 💻 **CLI mode** — run the full pipeline from the terminal for quick testing/debugging
 
@@ -50,7 +49,7 @@ Built with **LangGraph**, **LangChain**, **Hugging Face**, **Tavily**, and **Str
                  final report + critic feedback
 ```
 
-Every node reads from and writes to a single shared `ResearchState`, defined and orchestrated in `graph.py` using LangGraph's `StateGraph`.
+
 
 ---
 
@@ -58,7 +57,6 @@ Every node reads from and writes to a single shared `ResearchState`, defined and
 
 | Layer | Tool |
 |---|---|
-| Agent orchestration | LangGraph (`StateGraph`) |
 | Agent construction | LangChain (`create_agent`) |
 | LLM | Meta Llama 3 8B Instruct via Hugging Face Inference Endpoint |
 | Web search | Tavily API |
@@ -73,13 +71,11 @@ Every node reads from and writes to a single shared `ResearchState`, defined and
 ```
 research_system/
 ├── agents.py          # LLM setup + search/reader agents + writer/critic chains
-├── graph.py            # LangGraph StateGraph wiring the full pipeline together
 ├── pipeline.py          # CLI runner — streams the graph, prints each stage
 ├── app.py              # Streamlit UI
 ├── tools.py             # web_search and scrape_url tool definitions
 ├── requirements.txt
 ├── .env                 # your API keys (not committed)
-└── .gitignore
 ```
 
 ---
@@ -145,10 +141,10 @@ Opens at `http://localhost:8501` — enter a topic, hit **Run Research Pipeline*
 | Symptom | Likely cause | Fix |
 |---|---|---|
 | `ModuleNotFoundError` | Virtual env not activated, or install incomplete | Confirm `(venv)` shows in your prompt, then re-run `pip install -r requirements.txt` |
-| `ImportError: cannot import name 'ExecutionInfo' from 'langgraph.runtime'` | `langchain` and `langgraph` versions are out of sync — this ecosystem moves fast and pinned versions can drift apart | Let pip's resolver pick mutually compatible versions instead of pinning both independently: `pip install -U langchain langgraph` in a clean venv, then re-freeze with `pip freeze > requirements.txt` |
+| `ImportError: cannot import name 'ExecutionInfo' from 'langgraph.runtime'` | `langchain` versions are out of sync — this ecosystem moves fast and pinned versions can drift apart | Let pip's resolver pick mutually compatible versions instead of pinning both independently: `pip install -U langchain ` in a clean venv, then re-freeze with `pip freeze > requirements.txt` |
 | `401` / `403` from Hugging Face | Missing token or license not accepted for the Llama model | Check `.env`, and accept the model license on its Hugging Face page |
 | Tavily errors | Missing/expired key, or free-tier quota hit | Check `TAVILY_API_KEY` and your usage dashboard on tavily.com |
-| Deprecation warnings in console | `langgraph`/`langchain` API surface is still stabilizing post-1.0 | Safe to ignore unless it's a hard `ImportError` |
+| Deprecation warnings in console | `langchain` API surface is still stabilizing post-1.0 | Safe to ignore unless it's a hard `ImportError` |
 | Streamlit "port already in use" | Another app on 8501 | `streamlit run app.py --server.port 8502` |
 
 ---
