@@ -1,6 +1,18 @@
 import streamlit as st
 import time
 from agents import build_reader_agent, build_search_agent, writer_chain, critic_chain
+import streamlit as st
+
+# Get the API keys
+tavily_api_key = st.secrets.TAVILY_API_KEY
+huggingface_token = st.secrets.HUGGINGFACEHUB_API_TOKEN
+
+# Use them in your app
+if tavily_api_key and huggingface_token:
+    # Your app logic here
+    st.success("API keys loaded successfully!")
+else:
+    st.error("API keys not found!")
 
 # ── Page config ──────────────────────────────────────────────────────────────
 st.set_page_config(
